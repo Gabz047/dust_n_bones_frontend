@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed } from 'vue'
-import BoneService from '@/services/veterinary/bone'
+import BoneService from '@/services/bone'
 import { useStorage } from '@vueuse/core'
 
 export const useBoneStore = defineStore('bone', () => {

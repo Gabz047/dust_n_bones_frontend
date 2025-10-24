@@ -207,7 +207,7 @@ async function handleSubmit() {
       scientificName: form.scientificName?.trim() || null,
       totalQuantity: form.totalQuantity,
       description: form.description?.trim() || null,
-      active: form.active
+      active: form.active 
     }
 
     if (isEditing.value) {
