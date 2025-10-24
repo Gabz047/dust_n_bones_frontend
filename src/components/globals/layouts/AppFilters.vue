@@ -79,6 +79,7 @@ const updateSort = (event) => {
   gap: 1rem;
   margin-bottom: 2rem;
   align-items: center;
+
   /* centraliza verticalmente os items */
 }
 
@@ -93,6 +94,13 @@ const updateSort = (event) => {
 @media (min-width: 768px) {
   .filters-section {
     grid-template-columns: 2fr 1fr 1fr;
+
+  }
+}
+
+@media (max-width: 768px) {
+  .filters-section {
+    width: 100%;
   }
 }
 
@@ -184,5 +192,23 @@ const updateSort = (event) => {
 /* pequenas melhorias para evitar setas nativas quebrarem padding em alguns browsers */
 .select-filter::-ms-expand {
   display: none;
+}
+
+/* Mobile: garantir que cada filtro ocupe 100% da largura e não fiquem lado-a-lado */
+@media (max-width: 639px) {
+  .filter-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .filter-wrapper .select-filter,
+  .search-wrapper .input-search {
+    width: 100%;
+  }
+
+  .input-with-icon {
+    width: 100%;
+  }
 }
 </style>

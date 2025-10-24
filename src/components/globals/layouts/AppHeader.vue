@@ -4,7 +4,7 @@
       <div class="header-content">
         <div class="header-left">
 
-            <img class="icon-large" src="/dustnbones.jpeg" alt="">
+          <img class="icon-large" src="/dustnbones.jpeg" alt="">
 
           <div class="header-text">
             <h1 class="page-title">Listagem de Espécies</h1>
@@ -12,7 +12,7 @@
           </div>
         </div>
 
-        
+
       </div>
     </div>
   </header>
@@ -160,6 +160,14 @@
   margin-bottom: 2rem;
 }
 
+/* breakpoint pequena: duas colunas para telas médias pequenas */
+@media (min-width: 640px) {
+  .filters-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* breakpoint principal: manter 2fr 1fr 1fr para desktop */
 @media (min-width: 768px) {
   .filters-section {
     grid-template-columns: 2fr 1fr 1fr;
@@ -168,11 +176,13 @@
 
 .search-wrapper {
   width: 100%;
+  min-width: 0;
 }
 
 .input-with-icon {
   position: relative;
   width: 100%;
+  z-index: 0;
 }
 
 .input-icon {
@@ -195,6 +205,10 @@
   font-size: 0.875rem;
   outline: none;
   transition: all 0.2s;
+  box-sizing: border-box;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .input-search:focus {
@@ -205,10 +219,15 @@
 .filter-wrapper {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
 }
 
 .select-filter {
   flex: 1;
+  min-width: 0;
+  width: 100%;
   padding: 0.625rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
@@ -219,6 +238,9 @@
   cursor: pointer;
   outline: none;
   transition: all 0.2s;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .select-filter:hover {
@@ -228,6 +250,29 @@
 .select-filter:focus {
   border-color: #16a34a;
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+/* pequenas melhorias para evitar setas nativas quebrarem padding em alguns browsers */
+.select-filter::-ms-expand {
+  display: none;
+}
+
+/* Mobile: garantir que cada filtro ocupe 100% da largura e não fiquem lado-a-lado */
+@media (max-width: 639px) {
+  .filter-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .filter-wrapper .select-filter,
+  .search-wrapper .input-search {
+    width: 100%;
+  }
+
+  .input-with-icon {
+    width: 100%;
+  }
 }
 
 /* Results Info */
@@ -262,7 +307,9 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Species Grid */
