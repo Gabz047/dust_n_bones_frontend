@@ -4,7 +4,14 @@ import { ref, watch } from 'vue'
 const props = defineProps({
   searchTerm: String,
   selectedStatus: String,
-  sortBy: String
+  sortBy: {
+    type: String,
+    default: 'totalQuantity:DESC' // padrão totalQuantity
+  },
+  quantityField: {
+    type: String,
+    default: 'totalQuantity' // pode ser 'quantity' para ossos
+  }
 })
 
 const emit = defineEmits(['update:searchTerm', 'update:selectedStatus', 'update:sortBy', 'search'])
@@ -39,8 +46,7 @@ const updateSort = (event) => {
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <input v-model="localSearchTerm" type="text" placeholder="Buscar por nome comum ou científico..."
-          class="input-search" />
+        <input v-model="localSearchTerm" type="text" placeholder="Buscar..." class="input-search" />
       </div>
     </div>
 
@@ -56,14 +62,15 @@ const updateSort = (event) => {
       <select :value="sortBy" @change="updateSort" class="select-filter">
         <option value="name:ASC">Nome (A-Z)</option>
         <option value="name:DESC">Nome (Z-A)</option>
-        <option value="totalQuantity:DESC">Maior Quantidade</option>
-        <option value="totalQuantity:ASC">Menor Quantidade</option>
+        <option :value="`${quantityField}:DESC`">Maior Quantidade</option>
+        <option :value="`${quantityField}:ASC`">Menor Quantidade</option>
         <option value="createdAt:DESC">Mais Recentes</option>
         <option value="createdAt:ASC">Mais Antigos</option>
       </select>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .filters-section {

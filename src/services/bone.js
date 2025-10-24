@@ -31,6 +31,16 @@ class BoneService {
     }
   }
 
+  async getAllBySpecie(id, params = {}) {
+    try {
+      const { data } = await api.get(`/bones/specie/${id}`, { params })
+      return this._formatListResponse(data)
+    } catch (error) {
+      console.error('error in getAll by specie bone', error)
+      throw error
+    }
+  }
+
   async getById(id) {
     try {
       const { data } = await api.get(`/bones/${id}`)

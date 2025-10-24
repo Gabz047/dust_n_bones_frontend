@@ -8,6 +8,7 @@ import SpeciesCard from '@/components/species/SpeciesCard.vue'
 import AppFilters from '@/components/globals/layouts/AppFilters.vue'
 import GlobalGrid from '@/components/globals/layouts/GlobalGrid.vue'
 import AppPagination from '@/components/globals/layouts/AppPagination.vue'
+
 const specieStore = useSpecieStore()
 const router = useRouter()
 
@@ -118,10 +119,25 @@ onMounted(() => {
   <GlobalLayout>
     <div class="page-container">
       <div class="container">
-        <!-- Filtros -->
-        <AppFilters v-model:searchTerm="searchTerm" v-model:selectedStatus="selectedStatus" v-model:sortBy="sortBy"
-          @search="handleSearch" />
 
+        <!-- Filtros -->
+         <div class="container-filter">
+        <AppFilters
+          v-model:searchTerm="searchTerm"
+          v-model:selectedStatus="selectedStatus"
+          v-model:sortBy="sortBy"
+          @search="handleSearch"
+        />
+
+         <button @click="openCreateModal" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"/>
+              <path d="M12 5v14"/>
+            </svg>
+            <span class="btn-text">Nova Espécie</span>
+          </button>
+        </div>
         <!-- Info -->
         <div class="results-info">
           <p class="info-text">
@@ -133,17 +149,30 @@ onMounted(() => {
         <!-- Grid com Loading e Empty State -->
         <GlobalGrid :items="speciesList" :isLoading="isLoading" @clearFilters="clearFilters">
           <template #default="{ item }">
-            <SpeciesCard :specie="item" @edit="editSpecie" @delete="deleteSpecie" @viewBones="openSpecieBones" />
+            <SpeciesCard
+              :specie="item"
+              @edit="editSpecie"
+              @delete="deleteSpecie"
+              @viewBones="openSpecieBones"
+            />
           </template>
         </GlobalGrid>
 
-
         <!-- Paginação -->
-        <AppPagination :currentPage="currentPage" :totalPages="totalPages" @changePage="handlePageChange" />
+        <AppPagination
+          :currentPage="currentPage"
+          :totalPages="totalPages"
+          @changePage="handlePageChange"
+        />
       </div>
 
       <!-- Modal -->
-      <SpecieModal v-if="showModal" :specie="selectedSpecie" @close="closeModal" @saved="handleSaved" />
+      <SpecieModal
+        v-if="showModal"
+        :specie="selectedSpecie"
+        @close="closeModal"
+        @saved="handleSaved"
+      />
     </div>
   </GlobalLayout>
 </template>
@@ -162,7 +191,83 @@ onMounted(() => {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 1rem;
+}
+
+.container-filter {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .page-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.icon-large {
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 50px;
+  padding: 0.75rem 1.25rem;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+  font-size: 0.9375rem;
+}
+
+@media (min-width: 640px) {
+  .btn-primary {
+    width: auto;
+  }
+}
+
+.btn-primary:hover {
+  background: #15803d;
 }
 
 .results-info {
@@ -170,7 +275,7 @@ onMounted(() => {
 }
 
 .info-text {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: #475569;
   margin: 0;
 }

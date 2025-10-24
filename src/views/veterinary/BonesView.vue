@@ -21,7 +21,7 @@ const currentPage = ref(1)
 const pageSize = ref(9)
 const showModal = ref(false)
 const selectedBone = ref(null)
-const specieId = ref(route.params.specieId || null)
+const specieId = ref(route.params.id || null)
 
 // Computed
 const bonesList = computed(() => boneStore.bonesList)
@@ -49,12 +49,8 @@ async function loadBones() {
     params.active = selectedStatus.value === 'active'
   }
 
-  if (specieId.value) {
-    params.specieId = specieId.value
-  }
-
   try {
-    await boneStore.getAll(params)
+    await boneStore.getAllBySpecie(specieId.value, params)
   } catch (error) {
     console.error('Erro ao carregar ossos:', error)
   }
@@ -135,7 +131,8 @@ onMounted(() => {
   <GlobalLayout>
     <div class="page-container">
       <div class="container">
-        <!-- Back Button -->
+
+        <!-- Voltar -->
         <button @click="goBack" class="btn-back">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="m15 18-6-6 6-6"/>
@@ -143,25 +140,25 @@ onMounted(() => {
           <span>Voltar para Espécies</span>
         </button>
 
-        <!-- Header -->
-        <div class="page-header">
-          <h1 class="page-title">Gerenciamento de Ossos</h1>
+        <!-- Filtros + Botão -->
+        <div class="container-filter">
+          <AppFilters
+            v-model:searchTerm="searchTerm"
+            v-model:selectedStatus="selectedStatus"
+            v-model:sortBy="sortBy"
+             :quantityField="'quantity'"
+            @search="handleSearch"
+          />
+
           <button @click="openCreateModal" class="btn-primary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14"/>
               <path d="M12 5v14"/>
             </svg>
-            <span class="btn-text">Adicionar Osso</span>
+            <span class="btn-text">Novo Osso</span>
           </button>
         </div>
-
-        <!-- Filtros -->
-        <AppFilters
-          v-model:searchTerm="searchTerm"
-          v-model:selectedStatus="selectedStatus"
-          v-model:sortBy="sortBy"
-          @search="handleSearch"
-        />
 
         <!-- Info -->
         <div class="results-info">
@@ -171,7 +168,7 @@ onMounted(() => {
           </p>
         </div>
 
-        <!-- Grid com Loading e Empty State -->
+        <!-- Grid -->
         <GlobalGrid :items="bonesList" :isLoading="isLoading" @clearFilters="clearFilters">
           <template #default="{ item }">
             <BonesCard
@@ -220,10 +217,11 @@ onMounted(() => {
   padding: 1rem;
 }
 
-@media (min-width: 768px) {
-  .container {
-    padding: 2rem 1.5rem;
-  }
+.container-filter {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
 .btn-back {
@@ -247,52 +245,14 @@ onMounted(() => {
   border-color: #cbd5e1;
 }
 
-.btn-back svg {
-  flex-shrink: 0;
-}
-
-.page-header {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-@media (min-width: 640px) {
-  .page-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-  }
-}
-
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin: 0;
-}
-
-@media (min-width: 640px) {
-  .page-title {
-    font-size: 1.75rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .page-title {
-    font-size: 2rem;
-  }
-}
-
 .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  height: 50px;
   padding: 0.75rem 1.25rem;
-  background: #3b82f6;
+  background: #16a34a;
   color: white;
   border: none;
   border-radius: 0.5rem;
@@ -310,25 +270,7 @@ onMounted(() => {
 }
 
 .btn-primary:hover {
-  background: #2563eb;
-}
-
-.btn-primary svg {
-  flex-shrink: 0;
-}
-
-.btn-text {
-  white-space: nowrap;
-}
-
-@media (max-width: 374px) {
-  .btn-text {
-    display: none;
-  }
-
-  .btn-primary {
-    padding: 0.75rem;
-  }
+  background: #15803d;
 }
 
 .results-info {
@@ -339,12 +281,6 @@ onMounted(() => {
   font-size: 0.8125rem;
   color: #475569;
   margin: 0;
-}
-
-@media (min-width: 640px) {
-  .info-text {
-    font-size: 0.875rem;
-  }
 }
 
 .info-bold {

@@ -57,6 +57,20 @@ export const useBoneStore = defineStore('bone', () => {
     }
   }
 
+    async function getAllBySpecie(id, params = {}) {
+    state.value.loading = true
+    state.value.error = null
+    try {
+      const data = await BoneService.getAllBySpecie(id, params)
+      return handleListResponse(data)
+    } catch (err) {
+      state.value.error = err
+      throw err
+    } finally {
+      state.value.loading = false
+    }
+  }
+
   async function getById(id) {
     state.value.loading = true
     state.value.error = null
@@ -112,6 +126,7 @@ export const useBoneStore = defineStore('bone', () => {
     create,
     getAll,
     getById,
+    getAllBySpecie,
     update,
     remove
   }
