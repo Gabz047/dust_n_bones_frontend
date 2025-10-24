@@ -221,7 +221,7 @@ onMounted(() => {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
 .btn-back {
