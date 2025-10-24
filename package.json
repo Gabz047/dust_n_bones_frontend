@@ -33,6 +33,7 @@
     "jsdom": "^27.0.1",
     "prettier": "3.6.2",
     "vite": "^7.1.11",
+    "vite-plugin-pwa": "^1.1.0",
     "vite-plugin-vue-devtools": "^8.0.3",
     "vitest": "^3.2.4"
   }
