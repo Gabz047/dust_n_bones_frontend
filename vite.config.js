@@ -13,8 +13,8 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate', // atualiza SW automaticamente
       manifest: {
-        name: 'Dust N Bones',
-        short_name: 'DustNBones',
+        name: 'OSTEOTECA UNISOCIESC CAMPUS PARK',
+        short_name: 'Osteoteca Unisociesc',
         description: 'App de listagem de ossos para lab veterinário',
         theme_color: '#4caf50',
         background_color: '#ffffff',
